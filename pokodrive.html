@@ -1,1295 +1,909 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PokoDrive — Premium Car Rentals</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>PokoDrive — Drive Your Way</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet" />
 <style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
   :root {
-    --gold: #C9A84C;
-    --gold-light: #E8C97A;
-    --gold-dim: #8C6E30;
-    --bg-deep: #0A0A0C;
-    --bg-card: #111116;
-    --bg-surface: #18181F;
-    --text-primary: #F0EDE6;
-    --text-secondary: #9B9891;
-    --text-muted: #5A5854;
-    --border: rgba(201,168,76,0.15);
-    --border-hover: rgba(201,168,76,0.4);
-    --radius: 12px;
-    --radius-lg: 20px;
+    --ink: #0e0e0e;
+    --ink2: #3a3a3a;
+    --ink3: #7a7a7a;
+    --paper: #f5f2ed;
+    --white: #ffffff;
+    --accent: #d94f2b;
+    --accent2: #f5a623;
+    --card-bg: #ffffff;
+    --border: rgba(0,0,0,0.08);
+    --shadow: 0 2px 24px rgba(0,0,0,0.07);
   }
-
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-
-  html { scroll-behavior: smooth; }
 
   body {
-    font-family: 'DM Sans', system-ui, sans-serif;
-    background: var(--bg-deep);
-    color: var(--text-primary);
+    font-family: 'DM Sans', sans-serif;
+    background: var(--paper);
+    color: var(--ink);
     min-height: 100vh;
-    overflow-x: hidden;
   }
-
-  /* ─── SCROLLBAR ─── */
-  ::-webkit-scrollbar { width: 6px; }
-  ::-webkit-scrollbar-track { background: var(--bg-deep); }
-  ::-webkit-scrollbar-thumb { background: var(--gold-dim); border-radius: 3px; }
 
   /* ─── NAV ─── */
   nav {
-    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    position: fixed; top: 0; left: 0; right: 0;
+    z-index: 100;
+    background: rgba(245,242,237,0.88);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
     display: flex; align-items: center; justify-content: space-between;
-    padding: 1.2rem 4rem;
-    background: rgba(10,10,12,0.85);
-    backdrop-filter: blur(20px);
-    border-bottom: 0.5px solid var(--border);
-    transition: all 0.3s;
+    padding: 0 5vw;
+    height: 68px;
   }
-
-  .nav-logo {
-    display: flex; align-items: center; gap: 10px;
+  .logo {
+    font-family: 'Syne', sans-serif;
+    font-size: 22px; font-weight: 800;
+    letter-spacing: -0.5px;
+    color: var(--ink);
+    text-decoration: none;
   }
-
-  .logo-mark {
-    width: 36px; height: 36px;
-    background: var(--gold);
-    border-radius: 8px;
-    display: flex; align-items: center; justify-content: center;
-    font-weight: 700; font-size: 16px; color: #0A0A0C;
-    font-family: 'Playfair Display', serif;
-    letter-spacing: -1px;
-  }
-
-  .logo-text {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.3rem; font-weight: 600;
-    color: var(--text-primary);
-    letter-spacing: 0.5px;
-  }
-
-  .logo-text span { color: var(--gold); }
-
-  .nav-links {
-    display: flex; gap: 2.5rem; list-style: none;
-  }
-
-  .nav-links a {
-    text-decoration: none; color: var(--text-secondary);
-    font-size: 0.88rem; font-weight: 400; letter-spacing: 0.5px;
+  .logo span { color: var(--accent); }
+  nav ul { list-style: none; display: flex; gap: 32px; }
+  nav ul a {
+    font-size: 14px; font-weight: 500;
+    color: var(--ink2); text-decoration: none;
     transition: color 0.2s;
   }
-
-  .nav-links a:hover { color: var(--gold); }
-
+  nav ul a:hover { color: var(--accent); }
   .nav-cta {
-    display: flex; gap: 1rem; align-items: center;
+    background: var(--ink); color: var(--white);
+    border: none; border-radius: 100px;
+    padding: 10px 22px; font-size: 14px; font-weight: 500;
+    cursor: pointer; font-family: 'DM Sans', sans-serif;
+    transition: background 0.2s, transform 0.1s;
+    text-decoration: none;
   }
-
-  .btn-ghost {
-    background: none; border: 0.5px solid var(--border-hover);
-    color: var(--text-primary); padding: 0.5rem 1.2rem;
-    border-radius: 8px; cursor: pointer; font-size: 0.85rem;
-    font-family: 'DM Sans', sans-serif;
-    transition: all 0.2s;
-  }
-
-  .btn-ghost:hover { background: rgba(201,168,76,0.08); border-color: var(--gold); color: var(--gold); }
-
-  .btn-gold {
-    background: var(--gold); border: none;
-    color: #0A0A0C; padding: 0.55rem 1.4rem;
-    border-radius: 8px; cursor: pointer; font-size: 0.85rem;
-    font-weight: 500; font-family: 'DM Sans', sans-serif;
-    transition: all 0.2s;
-    letter-spacing: 0.3px;
-  }
-
-  .btn-gold:hover { background: var(--gold-light); transform: translateY(-1px); }
-  .btn-gold:active { transform: translateY(0); }
+  .nav-cta:hover { background: var(--accent); transform: translateY(-1px); }
+  .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; }
+  .hamburger span { width: 24px; height: 2px; background: var(--ink); border-radius: 2px; transition: 0.3s; }
 
   /* ─── HERO ─── */
   .hero {
     min-height: 100vh;
-    display: flex; flex-direction: column;
-    align-items: center; justify-content: center;
-    position: relative;
-    padding: 7rem 4rem 4rem;
-    overflow: hidden;
+    padding: 120px 5vw 80px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: center;
   }
-
-  .hero-bg {
-    position: absolute; inset: 0; z-index: 0;
-    background:
-      radial-gradient(ellipse 80% 60% at 50% 0%, rgba(201,168,76,0.08) 0%, transparent 70%),
-      radial-gradient(ellipse 40% 40% at 80% 60%, rgba(201,168,76,0.04) 0%, transparent 60%);
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--white); border: 1px solid var(--border);
+    border-radius: 100px; padding: 6px 16px 6px 10px;
+    font-size: 13px; color: var(--ink2); margin-bottom: 28px;
   }
-
-  .hero-grid {
-    position: absolute; inset: 0;
-    background-image:
-      linear-gradient(rgba(201,168,76,0.04) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(201,168,76,0.04) 1px, transparent 1px);
-    background-size: 60px 60px;
-    mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 30%, transparent 100%);
+  .hero-badge-dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--accent); display: inline-block;
+    animation: pulse 2s infinite;
   }
-
-  .hero-eyebrow {
-    position: relative; z-index: 1;
-    font-size: 0.75rem; letter-spacing: 3px; text-transform: uppercase;
-    color: var(--gold); font-weight: 500;
-    display: flex; align-items: center; gap: 12px;
-    margin-bottom: 1.5rem;
-    opacity: 0; animation: fadeUp 0.8s 0.2s forwards;
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+  .hero h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(40px, 6vw, 76px);
+    font-weight: 800;
+    line-height: 1.0;
+    letter-spacing: -2px;
+    color: var(--ink);
+    margin-bottom: 24px;
   }
-
-  .hero-eyebrow::before, .hero-eyebrow::after {
-    content: ''; flex: 1; max-width: 60px;
-    height: 0.5px; background: var(--gold);
+  .hero h1 em { color: var(--accent); font-style: normal; }
+  .hero p {
+    font-size: 17px; line-height: 1.7;
+    color: var(--ink3); max-width: 420px; margin-bottom: 40px;
   }
-
-  .hero-headline {
-    position: relative; z-index: 1;
-    font-family: 'Playfair Display', serif;
-    font-size: clamp(3rem, 7vw, 5.5rem);
-    font-weight: 700; line-height: 1.08;
-    text-align: center; max-width: 900px;
-    margin-bottom: 1.5rem;
-    opacity: 0; animation: fadeUp 0.8s 0.35s forwards;
+  .hero-actions { display: flex; gap: 16px; flex-wrap: wrap; }
+  .btn-primary {
+    background: var(--accent); color: var(--white);
+    border: none; border-radius: 100px;
+    padding: 14px 32px; font-size: 15px; font-weight: 500;
+    cursor: pointer; font-family: 'DM Sans', sans-serif;
+    transition: transform 0.15s, box-shadow 0.15s;
+    text-decoration: none; display: inline-block;
   }
-
-  .hero-headline .accent { color: var(--gold); font-style: italic; }
-
-  .hero-sub {
-    position: relative; z-index: 1;
-    font-size: 1.05rem; color: var(--text-secondary);
-    text-align: center; max-width: 480px;
-    line-height: 1.7; font-weight: 300;
-    margin-bottom: 3rem;
-    opacity: 0; animation: fadeUp 0.8s 0.5s forwards;
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(217,79,43,0.3); }
+  .btn-ghost {
+    background: transparent; color: var(--ink);
+    border: 1px solid rgba(0,0,0,0.15); border-radius: 100px;
+    padding: 14px 32px; font-size: 15px; font-weight: 500;
+    cursor: pointer; font-family: 'DM Sans', sans-serif;
+    transition: border-color 0.2s, background 0.2s;
+    text-decoration: none; display: inline-block;
   }
-
-  /* ─── SEARCH BOX ─── */
-  .search-box {
-    position: relative; z-index: 1;
-    background: var(--bg-card);
-    border: 0.5px solid var(--border);
-    border-radius: var(--radius-lg);
-    padding: 1.5rem;
-    width: 100%; max-width: 860px;
-    display: grid; grid-template-columns: 1fr 1fr 1fr auto;
-    gap: 1px;
-    opacity: 0; animation: fadeUp 0.8s 0.65s forwards;
+  .btn-ghost:hover { border-color: var(--ink); background: rgba(0,0,0,0.04); }
+  .hero-stats {
+    display: flex; gap: 32px; margin-top: 48px; flex-wrap: wrap;
   }
-
-  .search-field {
-    padding: 0.9rem 1.2rem;
-    background: var(--bg-surface);
-    border: none; border-radius: 10px;
-    color: var(--text-primary);
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.88rem;
-    width: 100%;
-  }
-
-  .search-field:focus { outline: none; border: 0.5px solid var(--border-hover); }
-
-  .search-field::placeholder { color: var(--text-muted); }
-
-  .search-group {
-    display: flex; flex-direction: column; gap: 4px;
-    padding: 0 0.5rem;
-  }
-
-  .search-group:first-child { padding-left: 0; }
-
-  .search-label {
-    font-size: 0.7rem; letter-spacing: 1.5px; text-transform: uppercase;
-    color: var(--gold); font-weight: 500; padding: 0 0.3rem;
-  }
-
-  .search-btn {
-    background: var(--gold); border: none; border-radius: 10px;
-    color: #0A0A0C; padding: 0 2rem; cursor: pointer;
-    font-weight: 600; font-size: 0.9rem;
-    font-family: 'DM Sans', sans-serif;
-    transition: all 0.2s; white-space: nowrap;
-    display: flex; align-items: center; gap: 8px;
-  }
-
-  .search-btn:hover { background: var(--gold-light); transform: scale(1.02); }
-
-  /* Stats strip */
-  .stats-strip {
-    position: relative; z-index: 1;
-    display: flex; gap: 4rem; margin-top: 3.5rem;
-    opacity: 0; animation: fadeUp 0.8s 0.8s forwards;
-  }
-
-  .stat { text-align: center; }
-
+  .stat-item { }
   .stat-num {
-    font-family: 'Playfair Display', serif;
-    font-size: 2rem; font-weight: 600; color: var(--gold);
+    font-family: 'Syne', sans-serif;
+    font-size: 28px; font-weight: 700; color: var(--ink);
     line-height: 1;
   }
+  .stat-label { font-size: 13px; color: var(--ink3); margin-top: 4px; }
+  .hero-visual {
+    position: relative; display: flex;
+    align-items: center; justify-content: center;
+  }
+  .hero-car-card {
+    background: var(--white); border-radius: 24px;
+    border: 1px solid var(--border);
+    padding: 28px;
+    box-shadow: 0 8px 48px rgba(0,0,0,0.1);
+    width: 100%; max-width: 440px;
+    animation: float 4s ease-in-out infinite;
+  }
+  @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)} }
+  .car-svg-wrap {
+    background: linear-gradient(135deg, #f8f4ef 0%, #ede8e1 100%);
+    border-radius: 16px; padding: 24px;
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 20px;
+  }
+  .car-info-row { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 16px; }
+  .car-name { font-family: 'Syne', sans-serif; font-size: 20px; font-weight: 700; }
+  .car-category { font-size: 12px; color: var(--ink3); margin-top: 2px; }
+  .car-price { text-align: right; }
+  .car-price-num { font-family: 'Syne', sans-serif; font-size: 22px; font-weight: 700; color: var(--accent); }
+  .car-price-unit { font-size: 12px; color: var(--ink3); }
+  .car-tags { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
+  .tag {
+    background: var(--paper); border: 1px solid var(--border);
+    border-radius: 100px; padding: 4px 12px;
+    font-size: 12px; color: var(--ink2);
+  }
+  .car-book-btn {
+    width: 100%; background: var(--ink); color: var(--white);
+    border: none; border-radius: 12px; padding: 14px;
+    font-size: 15px; font-weight: 500; cursor: pointer;
+    font-family: 'DM Sans', sans-serif; transition: background 0.2s;
+  }
+  .car-book-btn:hover { background: var(--accent); }
 
-  .stat-label {
-    font-size: 0.8rem; color: var(--text-secondary); margin-top: 4px;
+  /* ─── SEARCH BAR ─── */
+  .search-section {
+    padding: 0 5vw 80px;
+    margin-top: -20px;
+  }
+  .search-card {
+    background: var(--white); border-radius: 20px;
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow);
+    padding: 28px 32px;
+  }
+  .search-card h2 {
+    font-family: 'Syne', sans-serif;
+    font-size: 18px; font-weight: 700; margin-bottom: 20px;
+  }
+  .search-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr auto;
+    gap: 12px;
+    align-items: end;
+  }
+  .field label {
+    display: block; font-size: 12px; font-weight: 500;
+    color: var(--ink3); margin-bottom: 8px; text-transform: uppercase;
     letter-spacing: 0.5px;
   }
-
-  /* ─── HERO CAR IMAGE (CSS art) ─── */
-  .hero-car {
-    position: absolute; bottom: -20px; right: -60px;
-    width: 550px; opacity: 0.06; z-index: 0;
-    animation: float 6s ease-in-out infinite;
+  .field input, .field select {
+    width: 100%; background: var(--paper);
+    border: 1px solid var(--border); border-radius: 10px;
+    padding: 12px 16px; font-size: 14px;
+    font-family: 'DM Sans', sans-serif; color: var(--ink);
+    outline: none; transition: border-color 0.2s;
+    appearance: none;
   }
-
-  @keyframes float {
-    0%, 100% { transform: translateY(0px); }
-    50% { transform: translateY(-16px); }
+  .field input:focus, .field select:focus { border-color: var(--accent); }
+  .btn-search {
+    background: var(--accent); color: var(--white);
+    border: none; border-radius: 10px;
+    padding: 13px 28px; font-size: 15px; font-weight: 500;
+    cursor: pointer; font-family: 'DM Sans', sans-serif;
+    white-space: nowrap; transition: background 0.2s;
   }
+  .btn-search:hover { background: #bf3e1f; }
 
   /* ─── SECTION COMMON ─── */
-  .section {
-    padding: 6rem 4rem;
-    position: relative;
+  section { padding: 80px 5vw; }
+  .section-label {
+    font-size: 12px; font-weight: 500; letter-spacing: 2px;
+    text-transform: uppercase; color: var(--accent); margin-bottom: 12px;
   }
-
-  .section-header {
-    text-align: center; margin-bottom: 4rem;
-  }
-
-  .section-tag {
-    font-size: 0.72rem; letter-spacing: 3px; text-transform: uppercase;
-    color: var(--gold); font-weight: 500;
-    display: inline-block; margin-bottom: 0.75rem;
-  }
-
   .section-title {
-    font-family: 'Playfair Display', serif;
-    font-size: clamp(2rem, 4vw, 2.8rem);
-    font-weight: 600; line-height: 1.2;
-    color: var(--text-primary);
-    margin-bottom: 0.75rem;
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(28px, 4vw, 44px);
+    font-weight: 800; letter-spacing: -1px;
+    color: var(--ink); margin-bottom: 16px;
   }
+  .section-sub { font-size: 16px; color: var(--ink3); max-width: 500px; line-height: 1.6; }
+  .section-header { margin-bottom: 48px; }
 
-  .section-sub {
-    color: var(--text-secondary); font-size: 0.95rem;
-    font-weight: 300; max-width: 440px; margin: 0 auto;
-    line-height: 1.7;
+  /* ─── FLEET ─── */
+  .fleet-section { background: var(--white); }
+  .filter-tabs { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 32px; }
+  .filter-tab {
+    background: var(--paper); border: 1px solid var(--border);
+    border-radius: 100px; padding: 8px 20px;
+    font-size: 13px; font-weight: 500; cursor: pointer;
+    transition: all 0.2s; font-family: 'DM Sans', sans-serif;
+    color: var(--ink2);
   }
-
-  /* ─── FILTERS ─── */
-  .filters {
-    display: flex; gap: 0.75rem; justify-content: center;
-    margin-bottom: 3rem; flex-wrap: wrap;
+  .filter-tab.active, .filter-tab:hover {
+    background: var(--ink); color: var(--white); border-color: var(--ink);
   }
-
-  .filter-btn {
-    padding: 0.5rem 1.25rem; border-radius: 50px;
-    border: 0.5px solid var(--border);
-    background: none; color: var(--text-secondary);
-    font-size: 0.82rem; cursor: pointer;
-    font-family: 'DM Sans', sans-serif;
-    transition: all 0.2s; letter-spacing: 0.3px;
-  }
-
-  .filter-btn:hover, .filter-btn.active {
-    border-color: var(--gold); color: var(--gold);
-    background: rgba(201,168,76,0.08);
-  }
-
-  /* ─── CAR CARDS ─── */
   .cars-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 1.5rem;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 24px;
   }
-
   .car-card {
-    background: var(--bg-card);
-    border: 0.5px solid var(--border);
-    border-radius: var(--radius-lg);
-    overflow: hidden;
-    transition: all 0.3s;
+    background: var(--card-bg); border-radius: 20px;
+    border: 1px solid var(--border);
+    overflow: hidden; transition: transform 0.2s, box-shadow 0.2s;
     cursor: pointer;
-    position: relative;
   }
-
-  .car-card:hover {
-    border-color: var(--border-hover);
-    transform: translateY(-4px);
+  .car-card:hover { transform: translateY(-4px); box-shadow: 0 12px 40px rgba(0,0,0,0.1); }
+  .car-card-img {
+    background: linear-gradient(135deg, #f8f4ef 0%, #ede8e1 100%);
+    padding: 24px; display: flex; align-items: center; justify-content: center;
+    height: 180px; position: relative;
   }
-
-  .car-card:hover .card-cta { opacity: 1; transform: translateY(0); }
-
-  .car-badge {
-    position: absolute; top: 1rem; left: 1rem; z-index: 2;
-    padding: 0.3rem 0.75rem; border-radius: 50px;
-    font-size: 0.7rem; font-weight: 500; letter-spacing: 1px;
-    text-transform: uppercase;
+  .car-badge-cat {
+    position: absolute; top: 14px; left: 14px;
+    background: var(--white); border-radius: 100px;
+    padding: 4px 12px; font-size: 11px; font-weight: 600;
+    color: var(--ink2); border: 1px solid var(--border);
   }
-
-  .badge-premium {
-    background: rgba(201,168,76,0.2); color: var(--gold);
-    border: 0.5px solid rgba(201,168,76,0.4);
+  .car-badge-avail {
+    position: absolute; top: 14px; right: 14px;
+    background: #e6f4ea; border-radius: 100px;
+    padding: 4px 10px; font-size: 11px; font-weight: 600; color: #2e7d32;
   }
-
-  .badge-new {
-    background: rgba(52,211,153,0.15); color: #34d399;
-    border: 0.5px solid rgba(52,211,153,0.3);
+  .car-card-body { padding: 20px; }
+  .car-card-name { font-family: 'Syne', sans-serif; font-size: 18px; font-weight: 700; margin-bottom: 4px; }
+  .car-card-model { font-size: 13px; color: var(--ink3); margin-bottom: 14px; }
+  .car-card-specs { display: flex; gap: 16px; margin-bottom: 16px; }
+  .spec { font-size: 12px; color: var(--ink3); }
+  .spec strong { display: block; font-size: 13px; font-weight: 500; color: var(--ink2); margin-bottom: 2px; }
+  .car-card-footer { display: flex; align-items: center; justify-content: space-between; padding-top: 16px; border-top: 1px solid var(--border); }
+  .price-big { font-family: 'Syne', sans-serif; font-size: 22px; font-weight: 700; color: var(--accent); }
+  .price-big span { font-size: 13px; font-weight: 400; color: var(--ink3); }
+  .btn-rent {
+    background: var(--ink); color: var(--white);
+    border: none; border-radius: 100px;
+    padding: 9px 20px; font-size: 13px; font-weight: 500;
+    cursor: pointer; font-family: 'DM Sans', sans-serif;
+    transition: background 0.2s;
   }
-
-  .badge-popular {
-    background: rgba(251,146,60,0.15); color: #fb923c;
-    border: 0.5px solid rgba(251,146,60,0.3);
-  }
-
-  .car-image-wrap {
-    height: 190px;
-    background: var(--bg-surface);
-    display: flex; align-items: center; justify-content: center;
-    overflow: hidden; position: relative;
-  }
-
-  .car-emoji {
-    font-size: 4.5rem;
-    filter: drop-shadow(0 8px 24px rgba(0,0,0,0.5));
-    transition: transform 0.3s;
-  }
-
-  .car-card:hover .car-emoji { transform: scale(1.08) rotate(-2deg); }
-
-  .car-gradient {
-    position: absolute; bottom: 0; left: 0; right: 0; height: 60px;
-    background: linear-gradient(transparent, var(--bg-card));
-  }
-
-  .car-info {
-    padding: 1.2rem 1.4rem 1.4rem;
-  }
-
-  .car-make {
-    font-size: 0.72rem; color: var(--gold); letter-spacing: 2px;
-    text-transform: uppercase; font-weight: 500; margin-bottom: 0.3rem;
-  }
-
-  .car-name {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.3rem; font-weight: 600;
-    color: var(--text-primary); margin-bottom: 0.75rem;
-  }
-
-  .car-specs {
-    display: flex; gap: 1rem; margin-bottom: 1.1rem;
-  }
-
-  .spec {
-    display: flex; align-items: center; gap: 5px;
-    font-size: 0.78rem; color: var(--text-secondary);
-  }
-
-  .spec-icon { font-size: 0.85rem; }
-
-  .car-footer {
-    display: flex; align-items: center; justify-content: space-between;
-    padding-top: 1rem; border-top: 0.5px solid var(--border);
-  }
-
-  .car-price {
-    display: flex; align-items: baseline; gap: 4px;
-  }
-
-  .price-amount {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.6rem; font-weight: 600; color: var(--gold);
-  }
-
-  .price-period {
-    font-size: 0.75rem; color: var(--text-muted);
-  }
-
-  .card-cta {
-    background: var(--gold); border: none; border-radius: 8px;
-    color: #0A0A0C; padding: 0.5rem 1rem;
-    font-size: 0.82rem; font-weight: 500; cursor: pointer;
-    font-family: 'DM Sans', sans-serif;
-    opacity: 0; transform: translateY(4px); transition: all 0.25s;
-  }
-
-  .card-cta:hover { background: var(--gold-light); }
-
-  /* ─── RATING ─── */
-  .car-rating {
-    display: flex; align-items: center; gap: 5px;
-    margin-bottom: 0.75rem;
-  }
-
-  .stars { color: var(--gold); font-size: 0.8rem; letter-spacing: 1px; }
-
-  .rating-count { font-size: 0.75rem; color: var(--text-muted); }
+  .btn-rent:hover { background: var(--accent); }
 
   /* ─── HOW IT WORKS ─── */
-  .hiw-section {
-    background: var(--bg-card);
-    border-top: 0.5px solid var(--border);
-    border-bottom: 0.5px solid var(--border);
-  }
-
-  .steps-grid {
-    display: grid; grid-template-columns: repeat(4, 1fr);
-    gap: 0; position: relative;
-  }
-
-  .steps-grid::before {
-    content: '';
-    position: absolute; top: 32px; left: 12%; right: 12%;
-    height: 0.5px; background: linear-gradient(90deg, transparent, var(--gold-dim), transparent);
-  }
-
-  .step {
-    padding: 2rem 1.5rem; text-align: center;
-    border-right: 0.5px solid var(--border);
-  }
-
-  .step:last-child { border-right: none; }
-
+  .how-section { background: var(--paper); }
+  .steps-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 32px; }
+  .step-card { }
   .step-num {
-    width: 56px; height: 56px;
-    border: 0.5px solid var(--gold-dim);
-    border-radius: 50%;
+    font-family: 'Syne', sans-serif;
+    font-size: 48px; font-weight: 800;
+    color: rgba(0,0,0,0.06); line-height: 1; margin-bottom: 16px;
+  }
+  .step-icon {
+    width: 48px; height: 48px; border-radius: 14px;
     display: flex; align-items: center; justify-content: center;
-    margin: 0 auto 1.2rem;
-    font-family: 'Playfair Display', serif;
-    font-size: 1.1rem; color: var(--gold);
-    position: relative; z-index: 1;
-    background: var(--bg-card);
-    transition: all 0.2s;
+    margin-bottom: 16px;
+    background: var(--white); border: 1px solid var(--border);
+    font-size: 22px;
   }
-
-  .step:hover .step-num {
-    background: rgba(201,168,76,0.1);
-    border-color: var(--gold);
-  }
-
-  .step-icon { font-size: 1.4rem; margin-bottom: 0.4rem; }
-
-  .step-title {
-    font-weight: 500; font-size: 0.95rem;
-    color: var(--text-primary); margin-bottom: 0.5rem;
-  }
-
-  .step-desc {
-    font-size: 0.8rem; color: var(--text-muted);
-    line-height: 1.6; font-weight: 300;
-  }
-
-  /* ─── FEATURED / LUXURY SECTION ─── */
-  .featured-card {
-    display: grid; grid-template-columns: 1fr 1fr;
-    background: var(--bg-card);
-    border: 0.5px solid var(--border);
-    border-radius: var(--radius-lg);
-    overflow: hidden;
-    min-height: 400px;
-  }
-
-  .featured-visual {
-    background: var(--bg-surface);
-    display: flex; flex-direction: column;
-    align-items: center; justify-content: center;
-    position: relative; overflow: hidden;
-    padding: 3rem;
-  }
-
-  .featured-glow {
-    position: absolute; inset: 0;
-    background: radial-gradient(ellipse 60% 50% at 50% 50%, rgba(201,168,76,0.07) 0%, transparent 70%);
-  }
-
-  .featured-car-big { font-size: 8rem; position: relative; z-index: 1;
-    animation: float 5s ease-in-out infinite; }
-
-  .featured-content {
-    padding: 3rem 2.5rem;
-    display: flex; flex-direction: column;
-    justify-content: center;
-  }
-
-  .featured-tag {
-    font-size: 0.7rem; letter-spacing: 3px; text-transform: uppercase;
-    color: var(--gold); font-weight: 500; margin-bottom: 1rem;
-    display: flex; align-items: center; gap: 8px;
-  }
-
-  .featured-tag::before {
-    content: ''; width: 24px; height: 0.5px; background: var(--gold);
-  }
-
-  .featured-name {
-    font-family: 'Playfair Display', serif;
-    font-size: 2.5rem; font-weight: 600; line-height: 1.1;
-    margin-bottom: 1rem;
-  }
-
-  .featured-name em { color: var(--gold); font-style: italic; }
-
-  .featured-desc {
-    color: var(--text-secondary); font-size: 0.9rem; line-height: 1.7;
-    font-weight: 300; margin-bottom: 2rem;
-  }
-
-  .featured-specs {
-    display: grid; grid-template-columns: repeat(3, 1fr);
-    gap: 1rem; margin-bottom: 2rem;
-  }
-
-  .f-spec {
-    padding: 0.8rem;
-    background: var(--bg-surface); border-radius: 10px;
-    border: 0.5px solid var(--border);
-    text-align: center;
-  }
-
-  .f-spec-val {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.3rem; font-weight: 600; color: var(--gold);
-  }
-
-  .f-spec-label {
-    font-size: 0.7rem; color: var(--text-muted); margin-top: 2px;
-    letter-spacing: 0.5px;
-  }
-
-  .featured-actions { display: flex; gap: 1rem; }
-
-  .btn-outline {
-    background: none; border: 0.5px solid var(--border-hover);
-    color: var(--text-primary); padding: 0.7rem 1.5rem;
-    border-radius: 10px; cursor: pointer; font-size: 0.88rem;
-    font-family: 'DM Sans', sans-serif; transition: all 0.2s;
-  }
-
-  .btn-outline:hover { border-color: var(--gold); color: var(--gold); }
+  .step-card h3 { font-family: 'Syne', sans-serif; font-size: 18px; font-weight: 700; margin-bottom: 8px; }
+  .step-card p { font-size: 14px; color: var(--ink3); line-height: 1.6; }
 
   /* ─── TESTIMONIALS ─── */
-  .testimonials-grid {
-    display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem;
+  .reviews-section { background: var(--white); }
+  .reviews-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; }
+  .review-card {
+    background: var(--paper); border-radius: 20px;
+    border: 1px solid var(--border); padding: 28px;
   }
-
-  .testimonial {
-    background: var(--bg-card);
-    border: 0.5px solid var(--border);
-    border-radius: var(--radius-lg);
-    padding: 1.8rem;
-    transition: border-color 0.3s;
-  }
-
-  .testimonial:hover { border-color: var(--border-hover); }
-
-  .testimonial-stars { color: var(--gold); font-size: 0.9rem; margin-bottom: 1rem; }
-
-  .testimonial-text {
-    font-size: 0.88rem; line-height: 1.7; color: var(--text-secondary);
-    font-weight: 300; margin-bottom: 1.4rem; font-style: italic;
-  }
-
-  .testimonial-author {
-    display: flex; align-items: center; gap: 10px;
-  }
-
-  .author-avatar {
-    width: 38px; height: 38px; border-radius: 50%;
-    background: linear-gradient(135deg, var(--gold-dim), var(--bg-surface));
+  .stars { color: var(--accent2); font-size: 16px; margin-bottom: 16px; letter-spacing: 2px; }
+  .review-text { font-size: 15px; line-height: 1.7; color: var(--ink2); margin-bottom: 20px; font-style: italic; }
+  .reviewer { display: flex; align-items: center; gap: 12px; }
+  .reviewer-avatar {
+    width: 40px; height: 40px; border-radius: 50%;
     display: flex; align-items: center; justify-content: center;
-    font-size: 0.85rem; font-weight: 500; color: var(--gold);
-    border: 0.5px solid var(--border);
+    font-weight: 600; font-size: 14px; color: var(--white);
   }
+  .reviewer-name { font-weight: 500; font-size: 14px; }
+  .reviewer-city { font-size: 12px; color: var(--ink3); }
 
-  .author-name {
-    font-size: 0.88rem; font-weight: 500; color: var(--text-primary);
+  /* ─── CTA ─── */
+  .cta-section {
+    background: var(--ink);
+    padding: 100px 5vw;
+    text-align: center;
   }
-
-  .author-loc {
-    font-size: 0.75rem; color: var(--text-muted);
+  .cta-section .section-label { color: var(--accent2); }
+  .cta-section h2 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(32px, 5vw, 56px); font-weight: 800;
+    color: var(--white); letter-spacing: -1.5px;
+    margin-bottom: 16px; line-height: 1.1;
   }
-
-  /* ─── MODAL ─── */
-  .modal-overlay {
-    position: fixed; inset: 0; z-index: 200;
-    background: rgba(0,0,0,0.85);
-    backdrop-filter: blur(8px);
-    display: flex; align-items: center; justify-content: center;
-    opacity: 0; pointer-events: none;
-    transition: opacity 0.3s;
-    padding: 1.5rem;
+  .cta-section p { font-size: 17px; color: rgba(255,255,255,0.5); margin-bottom: 40px; }
+  .cta-btns { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+  .btn-white {
+    background: var(--white); color: var(--ink);
+    border: none; border-radius: 100px;
+    padding: 16px 36px; font-size: 15px; font-weight: 600;
+    cursor: pointer; font-family: 'DM Sans', sans-serif;
+    transition: transform 0.15s;
+    text-decoration: none; display: inline-block;
   }
-
-  .modal-overlay.open { opacity: 1; pointer-events: all; }
-
-  .modal {
-    background: var(--bg-card);
-    border: 0.5px solid var(--border-hover);
-    border-radius: var(--radius-lg);
-    width: 100%; max-width: 680px;
-    max-height: 90vh; overflow-y: auto;
-    transform: translateY(20px) scale(0.97);
-    transition: all 0.3s;
-  }
-
-  .modal-overlay.open .modal { transform: translateY(0) scale(1); }
-
-  .modal-header {
-    padding: 1.8rem 2rem 1rem;
-    border-bottom: 0.5px solid var(--border);
-    display: flex; justify-content: space-between; align-items: flex-start;
-  }
-
-  .modal-close {
-    background: var(--bg-surface); border: 0.5px solid var(--border);
-    color: var(--text-secondary); width: 32px; height: 32px;
-    border-radius: 50%; cursor: pointer; font-size: 1rem;
-    display: flex; align-items: center; justify-content: center;
-    transition: all 0.2s;
-  }
-
-  .modal-close:hover { border-color: var(--gold); color: var(--gold); }
-
-  .modal-body { padding: 1.8rem 2rem; }
-
-  .modal-car-visual {
-    background: var(--bg-surface); border-radius: 12px;
-    height: 160px; display: flex; align-items: center; justify-content: center;
-    font-size: 5rem; margin-bottom: 1.5rem;
-  }
-
-  .form-row {
-    display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;
-    margin-bottom: 1rem;
-  }
-
-  .form-group {
-    display: flex; flex-direction: column; gap: 6px;
-    margin-bottom: 1rem;
-  }
-
-  .form-label {
-    font-size: 0.72rem; letter-spacing: 1.5px; text-transform: uppercase;
-    color: var(--gold); font-weight: 500;
-  }
-
-  .form-input {
-    background: var(--bg-surface); border: 0.5px solid var(--border);
-    border-radius: 8px; color: var(--text-primary);
-    padding: 0.7rem 1rem; font-size: 0.88rem;
-    font-family: 'DM Sans', sans-serif; width: 100%;
+  .btn-white:hover { transform: translateY(-2px); }
+  .btn-outline-white {
+    background: transparent; color: var(--white);
+    border: 1px solid rgba(255,255,255,0.25); border-radius: 100px;
+    padding: 16px 36px; font-size: 15px; font-weight: 500;
+    cursor: pointer; font-family: 'DM Sans', sans-serif;
     transition: border-color 0.2s;
+    text-decoration: none; display: inline-block;
   }
-
-  .form-input:focus { outline: none; border-color: var(--gold); }
-
-  .form-input::placeholder { color: var(--text-muted); }
-
-  .price-summary {
-    background: var(--bg-surface);
-    border: 0.5px solid var(--border);
-    border-radius: 12px; padding: 1.2rem;
-    margin-top: 1.5rem; margin-bottom: 1.5rem;
-  }
-
-  .price-row {
-    display: flex; justify-content: space-between;
-    font-size: 0.85rem; color: var(--text-secondary);
-    padding: 0.35rem 0;
-  }
-
-  .price-total {
-    display: flex; justify-content: space-between;
-    font-size: 1rem; color: var(--text-primary);
-    padding-top: 0.75rem; margin-top: 0.5rem;
-    border-top: 0.5px solid var(--border); font-weight: 500;
-  }
-
-  .total-gold { color: var(--gold); font-family: 'Playfair Display', serif; font-size: 1.2rem; }
+  .btn-outline-white:hover { border-color: rgba(255,255,255,0.6); }
 
   /* ─── FOOTER ─── */
   footer {
-    background: var(--bg-card);
-    border-top: 0.5px solid var(--border);
-    padding: 4rem 4rem 2rem;
+    background: var(--ink); padding: 60px 5vw 32px;
+    border-top: 1px solid rgba(255,255,255,0.06);
   }
-
-  .footer-grid {
-    display: grid; grid-template-columns: 2fr 1fr 1fr 1fr;
-    gap: 3rem; margin-bottom: 3rem;
-  }
-
-  .footer-brand p {
-    font-size: 0.85rem; color: var(--text-secondary);
-    line-height: 1.7; font-weight: 300; margin-top: 1rem;
-    max-width: 260px;
-  }
-
+  .footer-top { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 40px; margin-bottom: 48px; }
+  .footer-brand .logo { font-size: 20px; }
+  .footer-brand p { font-size: 14px; color: rgba(255,255,255,0.4); margin-top: 12px; line-height: 1.6; max-width: 260px; }
   .footer-col h4 {
-    font-size: 0.72rem; letter-spacing: 2px; text-transform: uppercase;
-    color: var(--gold); font-weight: 500; margin-bottom: 1.2rem;
+    font-size: 12px; font-weight: 600; letter-spacing: 1.5px;
+    text-transform: uppercase; color: rgba(255,255,255,0.4); margin-bottom: 16px;
   }
-
-  .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 0.7rem; }
-
-  .footer-col a {
-    text-decoration: none; color: var(--text-secondary);
-    font-size: 0.85rem; font-weight: 300; transition: color 0.2s;
-  }
-
-  .footer-col a:hover { color: var(--gold); }
-
+  .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+  .footer-col ul a { font-size: 14px; color: rgba(255,255,255,0.65); text-decoration: none; transition: color 0.2s; }
+  .footer-col ul a:hover { color: var(--white); }
   .footer-bottom {
-    border-top: 0.5px solid var(--border);
-    padding-top: 2rem;
-    display: flex; justify-content: space-between; align-items: center;
+    border-top: 1px solid rgba(255,255,255,0.08);
+    padding-top: 28px;
+    display: flex; justify-content: space-between; align-items: center; flex-wrap: gap;
   }
+  .footer-bottom p { font-size: 13px; color: rgba(255,255,255,0.3); }
 
-  .footer-copy {
-    font-size: 0.78rem; color: var(--text-muted);
+  /* ─── MODAL ─── */
+  .modal-overlay {
+    display: none; position: fixed; inset: 0; z-index: 999;
+    background: rgba(0,0,0,0.5); backdrop-filter: blur(4px);
+    align-items: center; justify-content: center; padding: 20px;
   }
-
-  .footer-copy a { color: var(--gold); text-decoration: none; }
-
-  .footer-socials { display: flex; gap: 0.75rem; }
-
-  .social-btn {
-    width: 34px; height: 34px; border-radius: 50%;
-    border: 0.5px solid var(--border);
+  .modal-overlay.open { display: flex; }
+  .modal {
+    background: var(--white); border-radius: 24px;
+    padding: 36px; max-width: 480px; width: 100%;
+    box-shadow: 0 24px 80px rgba(0,0,0,0.2);
+    position: relative;
+    animation: slideUp 0.25s ease;
+  }
+  @keyframes slideUp { from{transform:translateY(20px);opacity:0} to{transform:translateY(0);opacity:1} }
+  .modal-close {
+    position: absolute; top: 16px; right: 16px;
+    background: var(--paper); border: none; border-radius: 50%;
+    width: 32px; height: 32px; cursor: pointer; font-size: 16px;
     display: flex; align-items: center; justify-content: center;
-    color: var(--text-muted); font-size: 0.8rem; cursor: pointer;
-    transition: all 0.2s; text-decoration: none;
   }
-
-  .social-btn:hover { border-color: var(--gold); color: var(--gold); }
-
-  /* ─── ANIMATIONS ─── */
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(24px); }
-    to { opacity: 1; transform: translateY(0); }
+  .modal h3 { font-family: 'Syne', sans-serif; font-size: 22px; font-weight: 700; margin-bottom: 6px; }
+  .modal-sub { font-size: 14px; color: var(--ink3); margin-bottom: 24px; }
+  .modal-car-preview {
+    background: var(--paper); border-radius: 16px;
+    padding: 20px; display: flex; align-items: center; gap: 16px;
+    margin-bottom: 24px;
   }
-
-  .reveal {
-    opacity: 0; transform: translateY(24px);
-    transition: opacity 0.6s ease, transform 0.6s ease;
+  .modal-car-info .car-name { font-weight: 600; font-size: 16px; }
+  .modal-car-info .car-rate { font-size: 14px; color: var(--accent); font-weight: 600; }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+  .form-field { margin-bottom: 12px; }
+  .form-field label { display: block; font-size: 12px; font-weight: 500; color: var(--ink3); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px; }
+  .form-field input, .form-field select {
+    width: 100%; background: var(--paper); border: 1px solid var(--border);
+    border-radius: 10px; padding: 11px 14px; font-size: 14px;
+    font-family: 'DM Sans', sans-serif; color: var(--ink); outline: none;
   }
+  .form-field input:focus, .form-field select:focus { border-color: var(--accent); }
+  .modal-total {
+    display: flex; justify-content: space-between; align-items: center;
+    background: var(--paper); border-radius: 12px; padding: 14px 16px;
+    margin: 16px 0;
+  }
+  .modal-total-label { font-size: 14px; color: var(--ink3); }
+  .modal-total-num { font-family: 'Syne', sans-serif; font-size: 20px; font-weight: 700; color: var(--accent); }
+  .btn-confirm {
+    width: 100%; background: var(--accent); color: var(--white);
+    border: none; border-radius: 12px; padding: 15px;
+    font-size: 15px; font-weight: 600; cursor: pointer;
+    font-family: 'DM Sans', sans-serif; transition: background 0.2s;
+  }
+  .btn-confirm:hover { background: #bf3e1f; }
 
-  .reveal.visible { opacity: 1; transform: translateY(0); }
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 900px) {
+    .hero { grid-template-columns: 1fr; text-align: center; }
+    .hero p { margin-left: auto; margin-right: auto; }
+    .hero-actions { justify-content: center; }
+    .hero-stats { justify-content: center; }
+    .hero-visual { display: none; }
+    .search-grid { grid-template-columns: 1fr 1fr; }
+    .footer-top { grid-template-columns: 1fr 1fr; }
+    nav ul { display: none; }
+    .hamburger { display: flex; }
+  }
+  @media (max-width: 600px) {
+    .search-grid { grid-template-columns: 1fr; }
+    .footer-top { grid-template-columns: 1fr; }
+    .form-row { grid-template-columns: 1fr; }
+  }
 
   /* ─── TOAST ─── */
   .toast {
-    position: fixed; bottom: 2rem; right: 2rem; z-index: 300;
-    background: var(--bg-surface);
-    border: 0.5px solid var(--gold);
-    border-radius: 12px; padding: 1rem 1.5rem;
-    display: flex; align-items: center; gap: 12px;
-    transform: translateY(100px); opacity: 0;
-    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-    max-width: 340px;
+    position: fixed; bottom: 32px; left: 50%; transform: translateX(-50%) translateY(100px);
+    background: var(--ink); color: var(--white);
+    border-radius: 100px; padding: 14px 28px;
+    font-size: 14px; font-weight: 500; z-index: 9999;
+    transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1);
+    white-space: nowrap;
   }
-
-  .toast.show { transform: translateY(0); opacity: 1; }
-
-  .toast-icon { font-size: 1.2rem; }
-
-  .toast-text { font-size: 0.85rem; color: var(--text-primary); line-height: 1.4; }
-
-  .toast-text strong { color: var(--gold); }
-
-  /* ─── MOBILE ─── */
-  @media (max-width: 768px) {
-    nav { padding: 1rem 1.5rem; }
-    .nav-links { display: none; }
-    .hero { padding: 6rem 1.5rem 3rem; }
-    .section { padding: 4rem 1.5rem; }
-    .search-box { grid-template-columns: 1fr; }
-    .stats-strip { gap: 2rem; }
-    .steps-grid { grid-template-columns: 1fr 1fr; }
-    .featured-card { grid-template-columns: 1fr; }
-    .testimonials-grid { grid-template-columns: 1fr; }
-    .footer-grid { grid-template-columns: 1fr 1fr; }
-    .footer-bottom { flex-direction: column; gap: 1rem; }
-  }
+  .toast.show { transform: translateX(-50%) translateY(0); }
 </style>
 </head>
 <body>
 
-<!-- NAV -->
-<nav id="navbar">
-  <div class="nav-logo">
-    <div class="logo-mark">PD</div>
-    <span class="logo-text">Poko<span>Drive</span></span>
-  </div>
-  <ul class="nav-links">
+<!-- ─── NAV ─── -->
+<nav>
+  <a href="#" class="logo">Poko<span>Drive</span></a>
+  <ul>
     <li><a href="#fleet">Fleet</a></li>
-    <li><a href="#how">How It Works</a></li>
-    <li><a href="#featured">Featured</a></li>
+    <li><a href="#how">How it works</a></li>
     <li><a href="#reviews">Reviews</a></li>
+    <li><a href="#contact">Contact</a></li>
   </ul>
-  <div class="nav-cta">
-    <button class="btn-ghost" onclick="showToast('🔑', '<strong>Sign In</strong> coming soon!')">Sign In</button>
-    <button class="btn-gold" onclick="showToast('🚗', 'Start your <strong>PokoDrive</strong> journey!')">Get Started</button>
+  <a href="#" class="nav-cta" onclick="openModal('Toyota Fortuner','SUV','₹2,499'); return false;">Book Now</a>
+  <div class="hamburger" onclick="toggleMenu()">
+    <span></span><span></span><span></span>
   </div>
 </nav>
 
-<!-- HERO -->
+<!-- ─── HERO ─── -->
 <section class="hero">
-  <div class="hero-bg"></div>
-  <div class="hero-grid"></div>
-
-  <p class="hero-eyebrow">Premium Car Rental</p>
-  <h1 class="hero-headline">
-    Drive Every Road<br>with <span class="accent">Confidence</span>
-  </h1>
-  <p class="hero-sub">
-    Handpicked luxury and everyday vehicles. Seamless booking. Unmatched comfort at every destination.
-  </p>
-
-  <!-- Search -->
-  <div class="search-box">
-    <div class="search-group">
-      <span class="search-label">📍 Pick-Up</span>
-      <input class="search-field" type="text" placeholder="City, airport, or address" />
+  <div class="hero-content">
+    <div class="hero-badge">
+      <span class="hero-badge-dot"></span>
+      Available 24/7 across India
     </div>
-    <div class="search-group">
-      <span class="search-label">📅 From</span>
-      <input class="search-field" type="date" />
+    <h1>Drive Your<br/>Way, <em>Any</em><br/>Day.</h1>
+    <p>Premium self-drive and chauffeur-driven cars at your fingertips. Flexible rentals, transparent pricing — no hidden charges.</p>
+    <div class="hero-actions">
+      <a href="#fleet" class="btn-primary">Explore Fleet →</a>
+      <a href="#how" class="btn-ghost">How it works</a>
     </div>
-    <div class="search-group">
-      <span class="search-label">📅 Until</span>
-      <input class="search-field" type="date" />
+    <div class="hero-stats">
+      <div class="stat-item">
+        <div class="stat-num">120+</div>
+        <div class="stat-label">Cars Available</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">50+</div>
+        <div class="stat-label">Cities Covered</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">4.9★</div>
+        <div class="stat-label">Avg Rating</div>
+      </div>
     </div>
-    <button class="search-btn" onclick="document.getElementById('fleet').scrollIntoView({behavior:'smooth'})">
-      Search →
-    </button>
   </div>
-
-  <!-- Stats -->
-  <div class="stats-strip">
-    <div class="stat"><div class="stat-num">2.4K+</div><div class="stat-label">Vehicles</div></div>
-    <div class="stat"><div class="stat-num">48</div><div class="stat-label">Cities</div></div>
-    <div class="stat"><div class="stat-num">98%</div><div class="stat-label">Satisfaction</div></div>
-    <div class="stat"><div class="stat-num">24/7</div><div class="stat-label">Support</div></div>
+  <div class="hero-visual">
+    <div class="hero-car-card">
+      <div class="car-svg-wrap">
+        <svg width="260" height="110" viewBox="0 0 260 110" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="30" y="55" width="200" height="34" rx="8" fill="#d1c9be"/>
+          <path d="M55 55 L75 28 L185 28 L210 55 Z" fill="#e8e0d6" stroke="#c5bdb3" stroke-width="1"/>
+          <rect x="80" y="32" width="45" height="20" rx="3" fill="#b8d4f0" opacity="0.7"/>
+          <rect x="135" y="32" width="45" height="20" rx="3" fill="#b8d4f0" opacity="0.7"/>
+          <circle cx="75" cy="89" r="14" fill="#333"/>
+          <circle cx="75" cy="89" r="8" fill="#888"/>
+          <circle cx="185" cy="89" r="14" fill="#333"/>
+          <circle cx="185" cy="89" r="8" fill="#888"/>
+          <rect x="32" y="62" width="18" height="12" rx="3" fill="#f5d87a"/>
+          <rect x="210" y="62" width="18" height="12" rx="3" fill="#f55a5a"/>
+          <path d="M55 55 L30 60 L30 80 L55 80 Z" fill="#d1c9be"/>
+          <path d="M210 55 L235 60 L235 80 L210 80 Z" fill="#d1c9be"/>
+          <rect x="88" y="55" width="85" height="5" rx="2" fill="#d94f2b" opacity="0.4"/>
+        </svg>
+      </div>
+      <div class="car-info-row">
+        <div>
+          <div class="car-name">Toyota Fortuner</div>
+          <div class="car-category">Premium SUV</div>
+        </div>
+        <div class="car-price">
+          <div class="car-price-num">₹2,499</div>
+          <div class="car-price-unit">per day</div>
+        </div>
+      </div>
+      <div class="car-tags">
+        <span class="tag">Automatic</span>
+        <span class="tag">AC</span>
+        <span class="tag">7 Seats</span>
+        <span class="tag">GPS</span>
+      </div>
+      <button class="car-book-btn" onclick="openModal('Toyota Fortuner','Premium SUV','₹2,499')">Book This Car</button>
+    </div>
   </div>
-
-  <!-- SVG Car silhouette -->
-  <svg class="hero-car" viewBox="0 0 520 220" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M40 160 L80 120 L160 90 L260 80 L360 90 L430 120 L480 160 L480 180 L40 180 Z" fill="#C9A84C"/>
-    <ellipse cx="130" cy="180" rx="42" ry="28" fill="#C9A84C"/>
-    <ellipse cx="390" cy="180" rx="42" ry="28" fill="#C9A84C"/>
-    <path d="M140 115 L180 95 L310 90 L360 110 L360 140 L140 140 Z" fill="#8C6E30" opacity="0.5"/>
-  </svg>
 </section>
 
-<!-- FLEET SECTION -->
-<section class="section" id="fleet">
-  <div class="section-header reveal">
-    <span class="section-tag">Our Fleet</span>
-    <h2 class="section-title">Choose Your Perfect Ride</h2>
-    <p class="section-sub">From compact city cars to premium SUVs — every vehicle meticulously maintained.</p>
+<!-- ─── SEARCH ─── -->
+<div class="search-section">
+  <div class="search-card">
+    <h2>🔍 Find Your Perfect Ride</h2>
+    <div class="search-grid">
+      <div class="field">
+        <label>Pickup City</label>
+        <select>
+          <option>Mumbai</option><option>Delhi</option><option>Bangalore</option>
+          <option>Pune</option><option>Kolkata</option><option>Chennai</option>
+          <option>Hyderabad</option><option>Ahmedabad</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Pickup Date</label>
+        <input type="date" id="pickup-date" />
+      </div>
+      <div class="field">
+        <label>Return Date</label>
+        <input type="date" id="return-date" />
+      </div>
+      <button class="btn-search" onclick="showToast('🔍 Searching available cars...')">Search Cars</button>
+    </div>
   </div>
+</div>
 
-  <div class="filters reveal">
-    <button class="filter-btn active" onclick="filterCars('all', this)">All</button>
-    <button class="filter-btn" onclick="filterCars('sedan', this)">Sedan</button>
-    <button class="filter-btn" onclick="filterCars('suv', this)">SUV</button>
-    <button class="filter-btn" onclick="filterCars('luxury', this)">Luxury</button>
-    <button class="filter-btn" onclick="filterCars('electric', this)">Electric</button>
-    <button class="filter-btn" onclick="filterCars('sports', this)">Sports</button>
+<!-- ─── FLEET ─── -->
+<section class="fleet-section" id="fleet">
+  <div class="section-header">
+    <div class="section-label">Our Fleet</div>
+    <h2 class="section-title">Choose Your Drive</h2>
+    <p class="section-sub">From compact hatchbacks to luxury SUVs — we have the right car for every journey.</p>
   </div>
-
-  <div class="cars-grid" id="carsGrid"></div>
+  <div class="filter-tabs">
+    <button class="filter-tab active" onclick="filterCars('all', this)">All Cars</button>
+    <button class="filter-tab" onclick="filterCars('suv', this)">SUV</button>
+    <button class="filter-tab" onclick="filterCars('sedan', this)">Sedan</button>
+    <button class="filter-tab" onclick="filterCars('hatchback', this)">Hatchback</button>
+    <button class="filter-tab" onclick="filterCars('luxury', this)">Luxury</button>
+    <button class="filter-tab" onclick="filterCars('electric', this)">Electric</button>
+  </div>
+  <div class="cars-grid" id="cars-grid"></div>
 </section>
 
-<!-- HOW IT WORKS -->
-<section class="section hiw-section" id="how">
-  <div class="section-header reveal">
-    <span class="section-tag">Process</span>
-    <h2 class="section-title">Effortless from Start to Finish</h2>
+<!-- ─── HOW IT WORKS ─── -->
+<section class="how-section" id="how">
+  <div class="section-header">
+    <div class="section-label">Process</div>
+    <h2 class="section-title">Book in 3 Easy Steps</h2>
+    <p class="section-sub">Simple, fast, and fully digital. No paperwork, no queues.</p>
   </div>
-  <div class="steps-grid reveal">
-    <div class="step">
+  <div class="steps-grid">
+    <div class="step-card">
       <div class="step-num">01</div>
-      <div class="step-icon">🔍</div>
-      <div class="step-title">Search & Compare</div>
-      <div class="step-desc">Browse our curated fleet. Filter by category, price, or features to find your perfect match.</div>
+      <div class="step-icon">📍</div>
+      <h3>Choose Location & Date</h3>
+      <p>Select your city, pickup date and return date. We operate 24/7 across 50+ cities in India.</p>
     </div>
-    <div class="step">
+    <div class="step-card">
       <div class="step-num">02</div>
-      <div class="step-icon">📋</div>
-      <div class="step-title">Book Instantly</div>
-      <div class="step-desc">Confirm your dates, add extras, and secure your reservation in under 2 minutes.</div>
+      <div class="step-icon">🚘</div>
+      <h3>Pick Your Car</h3>
+      <p>Browse our curated fleet. Filter by category, fuel type, and budget. Transparent pricing, always.</p>
     </div>
-    <div class="step">
+    <div class="step-card">
       <div class="step-num">03</div>
-      <div class="step-icon">🚗</div>
-      <div class="step-title">Pick Up & Drive</div>
-      <div class="step-desc">Collect your car from any of our 48 city locations or opt for doorstep delivery.</div>
+      <div class="step-icon">📱</div>
+      <h3>Confirm & Drive</h3>
+      <p>Complete your booking online. Upload your driving licence and get instant confirmation on your phone.</p>
     </div>
-    <div class="step">
+    <div class="step-card">
       <div class="step-num">04</div>
-      <div class="step-icon">✅</div>
-      <div class="step-title">Return & Review</div>
-      <div class="step-desc">Return at any location. Digital handover, instant receipt. Leave a review and earn credits.</div>
+      <div class="step-icon">🔑</div>
+      <h3>Pickup or Delivery</h3>
+      <p>Collect the car at our hub or opt for doorstep delivery. Spotless cars, every single time.</p>
     </div>
   </div>
 </section>
 
-<!-- FEATURED CAR -->
-<section class="section" id="featured">
-  <div class="section-header reveal">
-    <span class="section-tag">Editor's Pick</span>
-    <h2 class="section-title">Car of the Season</h2>
+<!-- ─── REVIEWS ─── -->
+<section class="reviews-section" id="reviews">
+  <div class="section-header">
+    <div class="section-label">Reviews</div>
+    <h2 class="section-title">What Customers Say</h2>
+    <p class="section-sub">Rated 4.9/5 across 12,000+ trips. Real people, real stories.</p>
   </div>
-  <div class="featured-card reveal">
-    <div class="featured-visual">
-      <div class="featured-glow"></div>
-      <div class="featured-car-big">🏎️</div>
-    </div>
-    <div class="featured-content">
-      <p class="featured-tag">Luxury · Sports</p>
-      <h3 class="featured-name">Porsche <em>911 Carrera</em></h3>
-      <p class="featured-desc">
-        Experience the iconic roar of a flat-six engine paired with razor-sharp handling. 
-        This is driving in its purest, most intoxicating form. For those who seek the extraordinary.
-      </p>
-      <div class="featured-specs">
-        <div class="f-spec">
-          <div class="f-spec-val">3.0s</div>
-          <div class="f-spec-label">0–100 km/h</div>
-        </div>
-        <div class="f-spec">
-          <div class="f-spec-val">385</div>
-          <div class="f-spec-label">Horsepower</div>
-        </div>
-        <div class="f-spec">
-          <div class="f-spec-val">PDK</div>
-          <div class="f-spec-label">Gearbox</div>
-        </div>
+  <div class="reviews-grid">
+    <div class="review-card">
+      <div class="stars">★★★★★</div>
+      <p class="review-text">"Booked a Fortuner for a Goa road trip — the car was immaculate, the process was completely seamless. PokoDrive is now my go-to whenever I travel."</p>
+      <div class="reviewer">
+        <div class="reviewer-avatar" style="background:#d94f2b">AR</div>
+        <div><div class="reviewer-name">Arjun Rao</div><div class="reviewer-city">Bangalore</div></div>
       </div>
-      <div class="featured-actions">
-        <button class="btn-gold" onclick="openModal({name:'Porsche 911 Carrera',make:'Porsche',price:8500,emoji:'🏎️',seats:2,fuel:'Petrol',trans:'PDK Auto',badge:'premium',badgeLabel:'Luxury'})">
-          Book Now — ₹8,500/day
-        </button>
-        <button class="btn-outline" onclick="showToast('📋', 'Full spec sheet for <strong>Porsche 911</strong> loading...')">
-          View Details
-        </button>
+    </div>
+    <div class="review-card">
+      <div class="stars">★★★★★</div>
+      <p class="review-text">"Amazing prices and zero hidden charges. Got a Tata Nexon EV for a weekend — superb experience. Customer support was very responsive too."</p>
+      <div class="reviewer">
+        <div class="reviewer-avatar" style="background:#0f6e56">PS</div>
+        <div><div class="reviewer-name">Priya Sharma</div><div class="reviewer-city">Mumbai</div></div>
+      </div>
+    </div>
+    <div class="review-card">
+      <div class="stars">★★★★★</div>
+      <p class="review-text">"Rented a BMW 5-Series for a client meeting. Made a fantastic impression! PokoDrive's luxury segment is genuinely premium — highly recommend."</p>
+      <div class="reviewer">
+        <div class="reviewer-avatar" style="background:#185fa5">RK</div>
+        <div><div class="reviewer-name">Rohan Kapoor</div><div class="reviewer-city">Delhi</div></div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- TESTIMONIALS -->
-<section class="section" id="reviews">
-  <div class="section-header reveal">
-    <span class="section-tag">Reviews</span>
-    <h2 class="section-title">Loved by Every Driver</h2>
-    <p class="section-sub">Real stories from our community of explorers.</p>
-  </div>
-  <div class="testimonials-grid reveal">
-    <div class="testimonial">
-      <div class="testimonial-stars">★★★★★</div>
-      <p class="testimonial-text">"PokoDrive made our Goa road trip absolutely perfect. The car was spotless, pickup was smooth, and the app experience was miles ahead of anything else I've used."</p>
-      <div class="testimonial-author">
-        <div class="author-avatar">AR</div>
-        <div>
-          <div class="author-name">Ananya Rao</div>
-          <div class="author-loc">Mumbai</div>
-        </div>
-      </div>
-    </div>
-    <div class="testimonial">
-      <div class="testimonial-stars">★★★★★</div>
-      <p class="testimonial-text">"Rented a BMW 5 Series for a client visit. Totally transformed the impression we made. The premium fleet is genuinely premium — no surprises or disappointments."</p>
-      <div class="testimonial-author">
-        <div class="author-avatar">VK</div>
-        <div>
-          <div class="author-name">Vikram Kapoor</div>
-          <div class="author-loc">Delhi</div>
-        </div>
-      </div>
-    </div>
-    <div class="testimonial">
-      <div class="testimonial-stars">★★★★☆</div>
-      <p class="testimonial-text">"The EV selection is amazing. Used the Tesla Model 3 for my Bangalore commute week. Zero emissions, zero stress. The 24/7 support team was incredibly responsive."</p>
-      <div class="testimonial-author">
-        <div class="author-avatar">PS</div>
-        <div>
-          <div class="author-name">Priya Sharma</div>
-          <div class="author-loc">Bangalore</div>
-        </div>
-      </div>
-    </div>
+<!-- ─── CTA ─── -->
+<section class="cta-section">
+  <div class="section-label">Get Started Today</div>
+  <h2>Your Next Journey<br/>Starts Here.</h2>
+  <p>Join 50,000+ happy drivers across India. First booking gets 15% off.</p>
+  <div class="cta-btns">
+    <a href="#fleet" class="btn-white">Browse Fleet →</a>
+    <a href="tel:+918001234567" class="btn-outline-white">📞 Call Us</a>
   </div>
 </section>
 
-<!-- FOOTER -->
-<footer>
-  <div class="footer-grid">
+<!-- ─── FOOTER ─── -->
+<footer id="contact">
+  <div class="footer-top">
     <div class="footer-brand">
-      <div class="nav-logo">
-        <div class="logo-mark">PD</div>
-        <span class="logo-text">Poko<span>Drive</span></span>
-      </div>
-      <p>Premium car rentals across India. Built with love by Sakshi. Every journey deserves a great car.</p>
-    </div>
-    <div class="footer-col">
-      <h4>Fleet</h4>
-      <ul>
-        <li><a href="#">Sedans</a></li>
-        <li><a href="#">SUVs</a></li>
-        <li><a href="#">Luxury Cars</a></li>
-        <li><a href="#">Electric Vehicles</a></li>
-        <li><a href="#">Sports Cars</a></li>
-      </ul>
+      <a href="#" class="logo" style="color:#fff">Poko<span>Drive</span></a>
+      <p>Premium car rentals across India. Self-drive and chauffeur options available 24/7. Clean cars, fair prices.</p>
     </div>
     <div class="footer-col">
       <h4>Company</h4>
       <ul>
-        <li><a href="#">About PokoDrive</a></li>
+        <li><a href="#">About Us</a></li>
         <li><a href="#">Careers</a></li>
-        <li><a href="#">Press</a></li>
         <li><a href="#">Blog</a></li>
-        <li><a href="#">Partners</a></li>
+        <li><a href="#">Press</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Services</h4>
+      <ul>
+        <li><a href="#">Self Drive</a></li>
+        <li><a href="#">Chauffeur Drive</a></li>
+        <li><a href="#">Corporate Rentals</a></li>
+        <li><a href="#">Airport Transfers</a></li>
       </ul>
     </div>
     <div class="footer-col">
       <h4>Support</h4>
       <ul>
-        <li><a href="#">Help Centre</a></li>
-        <li><a href="#">Contact Us</a></li>
-        <li><a href="#">Terms of Service</a></li>
+        <li><a href="#">Help Center</a></li>
+        <li><a href="#">Cancellation Policy</a></li>
         <li><a href="#">Privacy Policy</a></li>
-        <li><a href="#">Refund Policy</a></li>
+        <li><a href="tel:+918001234567">+91 800 123 4567</a></li>
       </ul>
     </div>
   </div>
   <div class="footer-bottom">
-    <p class="footer-copy">© 2025 PokoDrive. Crafted by <a href="#">Sakshi</a>. All rights reserved.</p>
-    <div class="footer-socials">
-      <a class="social-btn" href="#">in</a>
-      <a class="social-btn" href="#">tw</a>
-      <a class="social-btn" href="#">ig</a>
-      <a class="social-btn" href="#">yt</a>
-    </div>
+    <p>© 2025 PokoDrive. All rights reserved.</p>
+    <p style="color:rgba(255,255,255,0.3); font-size:13px;">Made with ❤ in India</p>
   </div>
 </footer>
 
-<!-- BOOKING MODAL -->
-<div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
-  <div class="modal" id="modal">
-    <div class="modal-header">
-      <div>
-        <div style="font-size:0.72rem;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:4px;" id="modalMake">Porsche</div>
-        <div style="font-family:'Playfair Display',serif;font-size:1.5rem;font-weight:600;" id="modalName">911 Carrera</div>
+<!-- ─── BOOKING MODAL ─── -->
+<div class="modal-overlay" id="booking-modal" onclick="closeModalOutside(event)">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <h3>Book Your Car</h3>
+    <p class="modal-sub">Fill in your details to confirm the booking</p>
+    <div class="modal-car-preview">
+      <svg width="80" height="40" viewBox="0 0 80 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="5" y="18" width="70" height="14" rx="4" fill="#d1c9be"/>
+        <path d="M15 18 L22 8 L58 8 L66 18 Z" fill="#e8e0d6"/>
+        <circle cx="22" cy="32" r="6" fill="#444"/><circle cx="22" cy="32" r="3" fill="#888"/>
+        <circle cx="58" cy="32" r="6" fill="#444"/><circle cx="58" cy="32" r="3" fill="#888"/>
+      </svg>
+      <div class="modal-car-info">
+        <div class="car-name" id="modal-car-name">Toyota Fortuner</div>
+        <div class="car-category" id="modal-car-cat">Premium SUV</div>
+        <div class="car-rate" id="modal-car-rate">₹2,499/day</div>
       </div>
-      <button class="modal-close" onclick="closeModalDirect()">✕</button>
     </div>
-    <div class="modal-body">
-      <div class="modal-car-visual" id="modalEmoji">🏎️</div>
-
-      <div class="form-row">
-        <div class="form-group">
-          <label class="form-label">📅 Pick-Up Date</label>
-          <input class="form-input" type="date" id="pickDate" />
-        </div>
-        <div class="form-group">
-          <label class="form-label">📅 Return Date</label>
-          <input class="form-input" type="date" id="returnDate" />
-        </div>
+    <div class="form-row">
+      <div class="form-field">
+        <label>Full Name</label>
+        <input type="text" placeholder="Rahul Sharma" />
       </div>
-
-      <div class="form-row">
-        <div class="form-group">
-          <label class="form-label">📍 Pick-Up Location</label>
-          <input class="form-input" type="text" placeholder="City or airport" id="pickLoc"/>
-        </div>
-        <div class="form-group">
-          <label class="form-label">📍 Return Location</label>
-          <input class="form-input" type="text" placeholder="Same or different" id="returnLoc"/>
-        </div>
+      <div class="form-field">
+        <label>Phone</label>
+        <input type="tel" placeholder="+91 98765 43210" />
       </div>
-
-      <div class="form-group">
-        <label class="form-label">👤 Full Name</label>
-        <input class="form-input" type="text" placeholder="As on driving licence" />
-      </div>
-
-      <div class="form-group">
-        <label class="form-label">📱 Phone Number</label>
-        <input class="form-input" type="tel" placeholder="+91 XXXXX XXXXX" />
-      </div>
-
-      <div class="price-summary" id="priceSummary">
-        <div class="price-row"><span>Rental (3 days)</span><span id="rentalCost">₹25,500</span></div>
-        <div class="price-row"><span>Insurance</span><span>₹1,200</span></div>
-        <div class="price-row"><span>Taxes & Fees</span><span>₹2,067</span></div>
-        <div class="price-total">
-          <span>Total</span>
-          <span class="total-gold" id="totalCost">₹28,767</span>
-        </div>
-      </div>
-
-      <button class="btn-gold" style="width:100%;padding:0.9rem;font-size:0.95rem;border-radius:10px;"
-        onclick="confirmBooking()">
-        Confirm Booking →
-      </button>
     </div>
+    <div class="form-row">
+      <div class="form-field">
+        <label>Pickup Date</label>
+        <input type="date" id="modal-pickup" onchange="calcTotal()" />
+      </div>
+      <div class="form-field">
+        <label>Return Date</label>
+        <input type="date" id="modal-return" onchange="calcTotal()" />
+      </div>
+    </div>
+    <div class="form-field">
+      <label>Pickup City</label>
+      <select>
+        <option>Mumbai</option><option>Delhi</option><option>Bangalore</option>
+        <option>Pune</option><option>Kolkata</option><option>Chennai</option>
+      </select>
+    </div>
+    <div class="modal-total">
+      <span class="modal-total-label" id="modal-days-label">Select dates to see total</span>
+      <span class="modal-total-num" id="modal-total">—</span>
+    </div>
+    <button class="btn-confirm" onclick="confirmBooking()">Confirm Booking →</button>
   </div>
 </div>
 
-<!-- TOAST -->
-<div class="toast" id="toast">
-  <span class="toast-icon" id="toastIcon">✅</span>
-  <span class="toast-text" id="toastText"></span>
-</div>
+<!-- ─── TOAST ─── -->
+<div class="toast" id="toast"></div>
 
 <script>
-  const cars = [
-    { id:1, make:'Maruti Suzuki', name:'Swift Dzire', price:899, seats:5, fuel:'Petrol', trans:'Manual', emoji:'🚗', cat:'sedan', badge:'popular', badgeLabel:'Popular', rating:4.6, reviews:312 },
-    { id:2, make:'Toyota', name:'Innova Crysta', price:2100, seats:7, fuel:'Diesel', trans:'Manual', emoji:'🚙', cat:'suv', badge:'popular', badgeLabel:'Popular', rating:4.8, reviews:527 },
-    { id:3, make:'BMW', name:'5 Series', price:5200, seats:5, fuel:'Petrol', trans:'Automatic', emoji:'🏁', cat:'luxury', badge:'premium', badgeLabel:'Luxury', rating:4.9, reviews:189 },
-    { id:4, make:'Tesla', name:'Model 3', price:3800, seats:5, fuel:'Electric', trans:'Auto', emoji:'⚡', cat:'electric', badge:'new', badgeLabel:'New', rating:4.9, reviews:241 },
-    { id:5, make:'Hyundai', name:'Creta SX', price:1600, seats:5, fuel:'Petrol', trans:'Automatic', emoji:'🛻', cat:'suv', badge:'popular', badgeLabel:'Popular', rating:4.7, reviews:398 },
-    { id:6, make:'Lamborghini', name:'Huracán EVO', price:32000, seats:2, fuel:'Petrol', trans:'PDK', emoji:'🏎️', cat:'sports', badge:'premium', badgeLabel:'Exotic', rating:5.0, reviews:64 },
-    { id:7, make:'Honda', name:'City Hybrid', price:1200, seats:5, fuel:'Hybrid', trans:'CVT', emoji:'🚘', cat:'sedan', badge:'new', badgeLabel:'Eco', rating:4.7, reviews:156 },
-    { id:8, make:'Mercedes-Benz', name:'GLC 300', price:7500, seats:5, fuel:'Petrol', trans:'Automatic', emoji:'🚐', cat:'luxury', badge:'premium', badgeLabel:'Luxury', rating:4.9, reviews:143 },
-    { id:9, make:'Tata', name:'Nexon EV Max', price:1900, seats:5, fuel:'Electric', trans:'Auto', emoji:'🔋', cat:'electric', badge:'new', badgeLabel:'EV', rating:4.6, reviews:287 },
-  ];
+const CARS = [
+  { id:1, name:'Toyota Fortuner', model:'2024 Model', cat:'suv', label:'SUV', seats:7, fuel:'Petrol', trans:'Automatic', price:'₹2,499', pval:2499, color:'#d94f2b' },
+  { id:2, name:'Honda City', model:'5th Gen', cat:'sedan', label:'Sedan', seats:5, fuel:'Petrol', trans:'Automatic', price:'₹1,199', pval:1199, color:'#185fa5' },
+  { id:3, name:'Maruti Swift', model:'AMT', cat:'hatchback', label:'Hatchback', seats:5, fuel:'Petrol', trans:'AMT', price:'₹699', pval:699, color:'#0f6e56' },
+  { id:4, name:'BMW 5 Series', model:'530i', cat:'luxury', label:'Luxury', seats:5, fuel:'Petrol', trans:'Automatic', price:'₹5,999', pval:5999, color:'#533ab7' },
+  { id:5, name:'Tata Nexon EV', model:'Max', cat:'electric', label:'Electric', seats:5, fuel:'Electric', trans:'Automatic', price:'₹1,499', pval:1499, color:'#3b6d11' },
+  { id:6, name:'Mahindra XUV700', model:'AX7', cat:'suv', label:'SUV', seats:7, fuel:'Diesel', trans:'Automatic', price:'₹2,199', pval:2199, color:'#854f0b' },
+  { id:7, name:'Hyundai Creta', model:'2024', cat:'suv', label:'SUV', seats:5, fuel:'Petrol', trans:'Automatic', price:'₹1,799', pval:1799, color:'#a32d2d' },
+  { id:8, name:'Mercedes C-Class', model:'C200', cat:'luxury', label:'Luxury', seats:5, fuel:'Petrol', trans:'Automatic', price:'₹7,499', pval:7499, color:'#3a3a3a' },
+];
 
-  let activeFilter = 'all';
+let currentFilter = 'all';
+let currentRate = 2499;
 
-  function renderCars(filter = 'all') {
-    const grid = document.getElementById('carsGrid');
-    const filtered = filter === 'all' ? cars : cars.filter(c => c.cat === filter);
-    grid.innerHTML = filtered.map(car => `
-      <div class="car-card" onclick="openModal(${JSON.stringify(car).replace(/"/g,'&quot;')})">
-        <span class="car-badge badge-${car.badge}">${car.badgeLabel}</span>
-        <div class="car-image-wrap">
-          <div class="car-emoji">${car.emoji}</div>
-          <div class="car-gradient"></div>
+function renderCars(filter) {
+  const grid = document.getElementById('cars-grid');
+  const list = filter === 'all' ? CARS : CARS.filter(c => c.cat === filter);
+  grid.innerHTML = list.map(c => `
+    <div class="car-card" onclick="openModal('${c.name}','${c.label}','${c.price}',${c.pval})">
+      <div class="car-card-img">
+        <span class="car-badge-cat">${c.label}</span>
+        <span class="car-badge-avail">Available</span>
+        <svg width="200" height="90" viewBox="0 0 200 90" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="15" y="42" width="170" height="28" rx="6" fill="#d1c9be"/>
+          <path d="M35 42 L48 20 L152 20 L168 42 Z" fill="#e8e0d6" stroke="#c5bdb3" stroke-width="0.8"/>
+          <rect x="52" y="24" width="38" height="15" rx="2" fill="#b8d4f0" opacity="0.65"/>
+          <rect x="110" y="24" width="38" height="15" rx="2" fill="#b8d4f0" opacity="0.65"/>
+          <circle cx="52" cy="70" r="12" fill="#333"/><circle cx="52" cy="70" r="7" fill="#777"/>
+          <circle cx="148" cy="70" r="12" fill="#333"/><circle cx="148" cy="70" r="7" fill="#777"/>
+          <rect x="17" y="48" width="14" height="10" rx="2" fill="#f5d87a"/>
+          <rect x="169" y="48" width="14" height="10" rx="2" fill="#f55a5a"/>
+          <rect x="68" y="42" width="64" height="4" rx="2" fill="${c.color}" opacity="0.5"/>
+        </svg>
+      </div>
+      <div class="car-card-body">
+        <div class="car-card-name">${c.name}</div>
+        <div class="car-card-model">${c.model}</div>
+        <div class="car-card-specs">
+          <div class="spec"><strong>${c.seats}</strong>Seats</div>
+          <div class="spec"><strong>${c.fuel}</strong>Fuel</div>
+          <div class="spec"><strong>${c.trans}</strong>Trans</div>
         </div>
-        <div class="car-info">
-          <div class="car-make">${car.make}</div>
-          <div class="car-name">${car.name}</div>
-          <div class="car-rating">
-            <span class="stars">${'★'.repeat(Math.floor(car.rating))}${'☆'.repeat(5 - Math.floor(car.rating))}</span>
-            <span class="rating-count">${car.rating} (${car.reviews})</span>
-          </div>
-          <div class="car-specs">
-            <span class="spec"><span class="spec-icon">👥</span>${car.seats} Seats</span>
-            <span class="spec"><span class="spec-icon">⛽</span>${car.fuel}</span>
-            <span class="spec"><span class="spec-icon">⚙️</span>${car.trans}</span>
-          </div>
-          <div class="car-footer">
-            <div class="car-price">
-              <span class="price-amount">₹${car.price.toLocaleString()}</span>
-              <span class="price-period">/day</span>
-            </div>
-            <button class="card-cta">Book Now</button>
-          </div>
+        <div class="car-card-footer">
+          <div class="price-big">${c.price} <span>/ day</span></div>
+          <button class="btn-rent" onclick="event.stopPropagation(); openModal('${c.name}','${c.label}','${c.price}',${c.pval})">Rent Now</button>
         </div>
       </div>
-    `).join('');
+    </div>
+  `).join('');
+}
+
+function filterCars(cat, el) {
+  document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  currentFilter = cat;
+  renderCars(cat);
+}
+
+function openModal(name, cat, price, pval) {
+  currentRate = pval || 2499;
+  document.getElementById('modal-car-name').textContent = name;
+  document.getElementById('modal-car-cat').textContent = cat;
+  document.getElementById('modal-car-rate').textContent = price + '/day';
+  document.getElementById('modal-total').textContent = '—';
+  document.getElementById('modal-days-label').textContent = 'Select dates to see total';
+  const today = new Date().toISOString().split('T')[0];
+  document.getElementById('modal-pickup').value = today;
+  document.getElementById('modal-pickup').min = today;
+  document.getElementById('modal-return').value = '';
+  document.getElementById('booking-modal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal() {
+  document.getElementById('booking-modal').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function closeModalOutside(e) {
+  if (e.target.id === 'booking-modal') closeModal();
+}
+
+function calcTotal() {
+  const p = document.getElementById('modal-pickup').value;
+  const r = document.getElementById('modal-return').value;
+  if (!p || !r) return;
+  const days = Math.ceil((new Date(r) - new Date(p)) / 86400000);
+  if (days <= 0) {
+    document.getElementById('modal-total').textContent = '—';
+    document.getElementById('modal-days-label').textContent = 'Return must be after pickup';
+    return;
   }
+  const total = (days * currentRate).toLocaleString('en-IN');
+  document.getElementById('modal-total').textContent = '₹' + total;
+  document.getElementById('modal-days-label').textContent = days + (days === 1 ? ' day' : ' days') + ' rental';
+}
 
-  function filterCars(cat, btn) {
-    activeFilter = cat;
-    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    renderCars(cat);
-  }
+function confirmBooking() {
+  closeModal();
+  showToast('🎉 Booking confirmed! Check your phone for details.');
+}
 
-  let currentCar = null;
+let toastTimer;
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 3000);
+}
 
-  function openModal(car) {
-    currentCar = car;
-    document.getElementById('modalMake').textContent = car.make || 'PokoDrive';
-    document.getElementById('modalName').textContent = car.name;
-    document.getElementById('modalEmoji').textContent = car.emoji;
+function toggleMenu() {
+  const ul = document.querySelector('nav ul');
+  ul.style.display = ul.style.display === 'flex' ? 'none' : 'flex';
+  ul.style.flexDirection = 'column';
+  ul.style.position = 'fixed';
+  ul.style.top = '68px';
+  ul.style.left = '0'; ul.style.right = '0';
+  ul.style.background = '#f5f2ed';
+  ul.style.padding = '16px 5vw 20px';
+  ul.style.borderBottom = '1px solid rgba(0,0,0,0.08)';
+  ul.style.gap = '20px';
+}
 
-    // Set default dates
-    const today = new Date();
-    const fmt = d => d.toISOString().split('T')[0];
-    const ret = new Date(today); ret.setDate(ret.getDate() + 3);
-    document.getElementById('pickDate').value = fmt(today);
-    document.getElementById('returnDate').value = fmt(ret);
+const today = new Date().toISOString().split('T')[0];
+document.getElementById('pickup-date').value = today;
+document.getElementById('pickup-date').min = today;
+document.getElementById('return-date').min = today;
 
-    updatePrice();
-
-    document.getElementById('pickDate').addEventListener('change', updatePrice);
-    document.getElementById('returnDate').addEventListener('change', updatePrice);
-
-    document.getElementById('modalOverlay').classList.add('open');
-    document.body.style.overflow = 'hidden';
-  }
-
-  function updatePrice() {
-    if (!currentCar) return;
-    const p = document.getElementById('pickDate').value;
-    const r = document.getElementById('returnDate').value;
-    if (!p || !r) return;
-    const days = Math.max(1, Math.round((new Date(r) - new Date(p)) / 86400000));
-    const rental = currentCar.price * days;
-    const insurance = Math.round(rental * 0.045);
-    const tax = Math.round((rental + insurance) * 0.075);
-    document.getElementById('rentalCost').textContent = `₹${rental.toLocaleString()}`;
-    document.querySelector('#priceSummary .price-row:nth-child(1) span:first-child').textContent = `Rental (${days} day${days>1?'s':''})`;
-    document.querySelector('#priceSummary .price-row:nth-child(2) span:last-child').textContent = `₹${insurance.toLocaleString()}`;
-    document.querySelector('#priceSummary .price-row:nth-child(3) span:last-child').textContent = `₹${tax.toLocaleString()}`;
-    document.getElementById('totalCost').textContent = `₹${(rental+insurance+tax).toLocaleString()}`;
-  }
-
-  function closeModal(e) {
-    if (e.target === document.getElementById('modalOverlay')) closeModalDirect();
-  }
-
-  function closeModalDirect() {
-    document.getElementById('modalOverlay').classList.remove('open');
-    document.body.style.overflow = '';
-  }
-
-  function confirmBooking() {
-    closeModalDirect();
-    showToast('🎉', `<strong>${currentCar ? currentCar.name : 'Your car'}</strong> is booked! Check your email for details.`);
-  }
-
-  let toastTimer;
-  function showToast(icon, text) {
-    const toast = document.getElementById('toast');
-    document.getElementById('toastIcon').textContent = icon;
-    document.getElementById('toastText').innerHTML = text;
-    toast.classList.add('show');
-    clearTimeout(toastTimer);
-    toastTimer = setTimeout(() => toast.classList.remove('show'), 3800);
-  }
-
-  // Scroll reveal
-  const observer = new IntersectionObserver(entries => {
-    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
-  }, { threshold: 0.1 });
-
-  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-
-  // Nav scroll effect
-  window.addEventListener('scroll', () => {
-    document.getElementById('navbar').style.background =
-      window.scrollY > 60 ? 'rgba(10,10,12,0.97)' : 'rgba(10,10,12,0.85)';
-  });
-
-  // Init
-  renderCars();
+renderCars('all');
 </script>
 </body>
 </html>
